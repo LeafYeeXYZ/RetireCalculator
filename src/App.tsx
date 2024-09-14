@@ -1,4 +1,4 @@
-import './App.css'
+import './tailwind.css'
 import { calculator, type RetirementResult } from './lib/calculator'
 import { Radio, DatePicker, Button } from 'antd'
 import { useState } from 'react'
@@ -11,7 +11,7 @@ function App() {
   const [result, setResult] = useState<RetirementResult | null>(null)
 
   return (
-    <div className="flex items-center justify-center flex-col w-dvw h-dvh bg-white text-gray-700">
+    <div className="flex items-center justify-center flex-col w-dvw h-dvh bg-white text-gray-700 overflow-hidden">
       <p className="mb-6 text-xl font-bold">
         延迟退休计算器
       </p>
