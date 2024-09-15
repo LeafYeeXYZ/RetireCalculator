@@ -11,12 +11,14 @@ export type RetirementResult = {
   retirementAgeMonth: number
   delayYears: number
   delayMonths: number
+  paidYears: number
+  paidMonths: number
 }
 
 /**
  * 计算退休年龄
- * @param {RetirementParams} params - 计算退休年龄所需的参数
- * @returns {RetirementResult} - 退休年龄的结果
+ * @param params 计算退休年龄所需的参数
+ * @returns 退休年龄的结果
  * @author GPT-4o & LeafYeeXYZ
  */
 export function calculator({ gender, role, birthDate }: RetirementParams): RetirementResult {
@@ -109,6 +111,8 @@ export function calculator({ gender, role, birthDate }: RetirementParams): Retir
     retirementAgeMonth = delayMonths;
   }
 
+  const { paidYears, paidMonths } = getPaidTime(retirementYear)
+
   return {
     retirementAgeYear,
     retirementAgeMonth,
@@ -116,5 +120,28 @@ export function calculator({ gender, role, birthDate }: RetirementParams): Retir
     retirementMonth,
     delayYears,
     delayMonths,
+    paidYears,
+    paidMonths
   };
+}
+
+/**
+ * 计算多缴纳社保年限
+ * @param retirementYear 退休年份
+ * @returns 多缴纳社保年月
+ * @author LeafYeeXYZ
+ */
+function getPaidTime(retirementYear: number): { paidYears: number; paidMonths: number } {
+  const baseMonths = 15 * 12
+  const paidMonths = Math.min(
+    20 * 12, 
+    baseMonths + Math.max(
+      0, 
+      6 * (retirementYear - 2029)
+    )
+  )
+  return {
+    paidYears: Math.floor(paidMonths / 12),
+    paidMonths: paidMonths % 12
+  }
 }
